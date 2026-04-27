@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>LydasLex — Legal Operations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --indigo: #4338CA;
+  --indigo-mid: #5046E4;
+  --violet: #818CF8;
+  --violet-light: #C7D2FE;
+  --violet-pale: #EEF2FF;
+  --ink: #0D0D1A;
+  --ink-2: #1E1E35;
+  --muted: #6B7280;
+  --muted-light: #9CA3AF;
+  --paper: #FAFAF8;
+  --paper-2: #F3F2EE;
+  --paper-3: #ECEAE4;
+  --border: #E5E3DC;
+  --border-dark: #D1CFC8;
+  --white: #FFFFFF;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.25rem 5rem;
+  background: rgba(250,250,248,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+
+.logo-mark {
+  width: 30px; height: 30px; border-radius: 5px;
+  background: var(--indigo);
+  display: grid; grid-template-columns: 1fr 1fr; gap: 2.5px; padding: 5px;
+}
+.logo-mark span { border-radius: 1.5px; display: block; }
+.logo-mark span:nth-child(1) { background: var(--violet-light); }
+.logo-mark span:nth-child(2) { background: var(--violet); }
+.logo-mark span:nth-child(3) { background: var(--violet); }
+.logo-mark span:nth-child(4) { background: var(--violet-light); }
+
+.logo-text { font-family: 'Playfair Display', serif; font-size: 1.25rem; font-weight: 700; letter-spacing: -0.01em; }
+.logo-text .lydas { color: var(--violet); }
+.logo-text .lex { color: var(--indigo); }
+
+.nav-right { display: flex; align-items: center; gap: 2rem; }
+
+.nav-link { font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.08em; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+.nav-link:hover { color: var(--indigo); }
+
+.nav-cta { font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.08em; color: var(--white); background: var(--indigo); padding: 0.55rem 1.25rem; border-radius: 3px; text-decoration: none; transition: background 0.2s; }
+.nav-cta:hover { background: var(--indigo-mid); }
+
+/* HERO */
+.hero {
+  min-height: 100vh;
+  padding: 10rem 5rem 6rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-eyebrow { font-family: 'DM Mono', monospace; font-size: 0.68rem; letter-spacing: 0.18em; color: var(--indigo); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem; }
+.hero-eyebrow::before { content: ''; width: 28px; height: 1px; background: var(--indigo); display: block; }
+
+.hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(3.2rem, 5.5vw, 5rem); line-height: 1.0; letter-spacing: -0.03em; font-weight: 900; margin-bottom: 1.75rem; }
+.hero h1 em { font-style: italic; color: var(--indigo); }
+.hero h1 .block-word { display: inline-block; background: var(--indigo); color: var(--white); padding: 0 0.2em; margin-left: 0.1em; }
+
+.hero-sub { font-size: 1.05rem; color: var(--muted); max-width: 440px; margin-bottom: 2.5rem; font-weight: 400; line-height: 1.8; }
+
+.hero-actions { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
+
+.btn-primary { background: var(--indigo); color: var(--white); padding: 0.9rem 2rem; border-radius: 3px; text-decoration: none; font-weight: 600; font-size: 0.875rem; transition: background 0.2s, transform 0.15s; }
+.btn-primary:hover { background: var(--indigo-mid); transform: translateY(-1px); }
+
+.btn-ghost { color: var(--muted); text-decoration: none; display: flex; align-items: center; gap: 0.4rem; transition: color 0.2s; font-family: 'DM Mono', monospace; font-size: 0.75rem; letter-spacing: 0.05em; }
+.btn-ghost:hover { color: var(--indigo); }
+.btn-ghost::after { content: '→'; }
+
+/* HERO RIGHT */
+.hero-right { position: relative; height: 520px; }
+
+.geo-block-main { position: absolute; top: 0; right: 0; width: 340px; height: 340px; background: var(--indigo); border-radius: 4px; display: flex; flex-direction: column; justify-content: flex-end; padding: 2.5rem; overflow: hidden; }
+.geo-block-main::before { content: ''; position: absolute; top: -60px; right: -60px; width: 200px; height: 200px; border-radius: 50%; background: rgba(129,140,248,0.15); }
+
+.geo-stat-number { font-family: 'Playfair Display', serif; font-size: 3.5rem; font-weight: 900; color: var(--white); line-height: 1; margin-bottom: 0.25rem; position: relative; z-index: 2; }
+.geo-stat-label { font-family: 'DM Mono', monospace; font-size: 0.68rem; letter-spacing: 0.12em; color: var(--violet-light); position: relative; z-index: 2; }
+
+.geo-block-accent { position: absolute; bottom: 40px; left: 0; width: 180px; height: 180px; background: var(--violet-pale); border: 1px solid var(--violet-light); border-radius: 4px; padding: 1.5rem; display: flex; flex-direction: column; justify-content: flex-end; }
+.accent-label { font-family: 'DM Mono', monospace; font-size: 0.62rem; letter-spacing: 0.1em; color: var(--indigo); margin-bottom: 0.4rem; }
+.accent-value { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; color: var(--indigo); line-height: 1.2; }
+
+.geo-tag { position: absolute; top: 280px; right: 20px; background: var(--paper); border: 1px solid var(--border-dark); border-radius: 3px; padding: 0.75rem 1rem; font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.1em; color: var(--muted); }
+
+/* MARQUEE */
+.marquee-section { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); background: var(--paper-2); padding: 1rem 0; overflow: hidden; white-space: nowrap; }
+.marquee-track { display: inline-flex; animation: marquee 25s linear infinite; }
+.marquee-item { font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.12em; color: var(--muted); padding: 0 2.5rem; display: inline-flex; align-items: center; gap: 2.5rem; }
+.marquee-item::after { content: '·'; color: var(--violet); font-size: 1rem; }
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+/* PROBLEM */
+.problem { padding: 8rem 5rem; display: grid; grid-template-columns: 2fr 3fr; gap: 6rem; align-items: start; border-bottom: 1px solid var(--border); }
+
+.section-label { font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.18em; color: var(--muted); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem; }
+.section-label::before { content: ''; width: 20px; height: 1px; background: var(--muted); display: block; }
+
+.section-title { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 3vw, 2.5rem); line-height: 1.15; letter-spacing: -0.02em; font-weight: 700; position: sticky; top: 7rem; }
+.section-title em { font-style: italic; color: var(--indigo); }
+
+.pain-list { display: flex; flex-direction: column; }
+.pain-item { padding: 2.5rem 0; border-bottom: 1px solid var(--border); display: grid; grid-template-columns: 3rem 1fr; gap: 1.5rem; align-items: start; }
+.pain-item:first-child { border-top: 1px solid var(--border); }
+.pain-num { font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.08em; color: var(--violet); padding-top: 0.2rem; }
+.pain-title { font-size: 1.05rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--ink); }
+.pain-body { font-size: 0.9rem; color: var(--muted); line-height: 1.75; }
+
+/* PRODUCTS */
+.products { padding: 8rem 5rem; border-bottom: 1px solid var(--border); }
+.products-header { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; margin-bottom: 5rem; align-items: end; }
+.products-header p { font-size: 1rem; color: var(--muted); line-height: 1.8; align-self: end; }
+
+.product-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+.product-card { border: 1px solid var(--border); border-radius: 4px; overflow: hidden; background: var(--white); transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s; }
+.product-card:hover { border-color: var(--violet); transform: translateY(-3px); box-shadow: 0 12px 40px rgba(67,56,202,0.08); }
+
+.product-header { background: var(--indigo); padding: 2rem 2rem 1.5rem; position: relative; overflow: hidden; }
+.product-header::after { content: ''; position: absolute; bottom: -30px; right: -30px; width: 100px; height: 100px; border-radius: 50%; background: rgba(129,140,248,0.12); }
+.product-tag { font-family: 'DM Mono', monospace; font-size: 0.62rem; letter-spacing: 0.12em; color: var(--violet-light); margin-bottom: 0.75rem; display: block; }
+.product-name { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; color: var(--white); line-height: 1.2; position: relative; z-index: 2; }
+
+.product-body { padding: 2rem; }
+.product-desc { font-size: 0.875rem; color: var(--muted); line-height: 1.75; margin-bottom: 1.5rem; }
+.feature-list { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+.feature-list li { font-size: 0.8rem; color: var(--ink-2); display: flex; align-items: flex-start; gap: 0.6rem; line-height: 1.5; }
+.feature-list li::before { content: ''; width: 4px; height: 4px; border-radius: 50%; background: var(--indigo); flex-shrink: 0; margin-top: 0.45rem; }
+
+/* ZAB */
+.zab { padding: 8rem 5rem; background: var(--ink); border-bottom: 1px solid rgba(255,255,255,0.05); position: relative; overflow: hidden; }
+.zab::before { content: ''; position: absolute; top: -200px; right: -200px; width: 500px; height: 500px; border-radius: 50%; background: radial-gradient(circle, rgba(67,56,202,0.15) 0%, transparent 70%); pointer-events: none; }
+.zab-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center; position: relative; z-index: 2; }
+.zab .section-label { color: var(--violet); }
+.zab .section-label::before { background: var(--violet); }
+.zab .section-title { color: var(--white); position: static; }
+.zab .section-title em { color: var(--violet); }
+.zab-body { color: rgba(255,255,255,0.5); font-size: 0.95rem; line-height: 1.85; margin-top: 1.5rem; max-width: 420px; }
+.zab-code { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 4px; padding: 2rem; font-family: 'DM Mono', monospace; font-size: 0.78rem; line-height: 2; color: rgba(255,255,255,0.4); }
+.zab-code .c { color: rgba(129,140,248,0.35); }
+.zab-code .k { color: #818CF8; }
+.zab-code .s { color: #A5B4FC; }
+.zab-code .f { color: #6EE7B7; }
+.zab-code .p { color: rgba(255,255,255,0.6); }
+
+/* FOUNDER */
+.founder { padding: 8rem 5rem; border-bottom: 1px solid var(--border); display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center; }
+.founder-card-main { background: var(--indigo); border-radius: 4px; padding: 3rem; position: relative; overflow: hidden; }
+.founder-card-main::before { content: ''; position: absolute; top: -80px; right: -80px; width: 250px; height: 250px; border-radius: 50%; background: rgba(129,140,248,0.12); }
+.founder-initial { width: 64px; height: 64px; border-radius: 50%; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--white); margin-bottom: 2rem; position: relative; z-index: 2; }
+.founder-card-main .name { font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 700; color: var(--white); margin-bottom: 0.3rem; position: relative; z-index: 2; }
+.founder-card-main .title { font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.1em; color: var(--violet-light); position: relative; z-index: 2; }
+.founder-card-sub { background: var(--violet-pale); border: 1px solid var(--violet-light); border-radius: 4px; padding: 1.25rem 1.5rem; margin-top: 1rem; font-family: 'DM Mono', monospace; font-size: 0.68rem; letter-spacing: 0.08em; color: var(--indigo); line-height: 1.9; }
+.founder-content .section-title { position: static; }
+.founder-bio { font-size: 0.95rem; color: var(--muted); line-height: 1.85; margin-top: 1.5rem; margin-bottom: 2rem; }
+.tag-grid { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.tag { font-family: 'DM Mono', monospace; font-size: 0.62rem; letter-spacing: 0.08em; color: var(--muted); border: 1px solid var(--border-dark); padding: 0.3rem 0.75rem; border-radius: 2px; background: var(--white); }
+
+/* FOOTER CTA */
+.footer-cta { padding: 8rem 5rem; background: var(--paper-2); border-bottom: 1px solid var(--border); display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+.footer-cta .section-title { position: static; font-size: 2.8rem; }
+.footer-cta .section-title em { font-style: italic; color: var(--indigo); }
+.cta-right p { font-size: 0.95rem; color: var(--muted); line-height: 1.8; margin-bottom: 2rem; }
+.email-cta { display: flex; flex-direction: column; gap: 1rem; }
+.email-display { font-family: 'DM Mono', monospace; font-size: 0.85rem; color: var(--indigo); text-decoration: none; border-bottom: 1px solid var(--violet-light); padding-bottom: 3px; display: inline-block; transition: color 0.2s; }
+.email-display:hover { color: var(--indigo-mid); }
+
+/* FOOTER */
+footer { padding: 2rem 5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; border-top: 1px solid var(--border); background: var(--paper); }
+footer p { font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.08em; color: var(--muted); }
+
+.hero-left { animation: fadeUp 0.7s ease both; }
+.hero-right { animation: fadeUp 0.7s ease 0.15s both; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+@media (max-width: 900px) {
+  nav { padding: 1rem 1.5rem; }
+  .nav-right .nav-link { display: none; }
+  .hero { grid-template-columns: 1fr; padding: 8rem 1.5rem 4rem; }
+  .hero-right { display: none; }
+  .problem { grid-template-columns: 1fr; padding: 4rem 1.5rem; gap: 2rem; }
+  .section-title { position: static !important; }
+  .products { padding: 4rem 1.5rem; }
+  .products-header { grid-template-columns: 1fr; gap: 1.5rem; margin-bottom: 2.5rem; }
+  .product-grid { grid-template-columns: 1fr; }
+  .zab { padding: 4rem 1.5rem; }
+  .zab-inner { grid-template-columns: 1fr; gap: 3rem; }
+  .founder { grid-template-columns: 1fr; padding: 4rem 1.5rem; gap: 3rem; }
+  .footer-cta { grid-template-columns: 1fr; padding: 4rem 1.5rem; gap: 2rem; }
+  footer { padding: 1.5rem; flex-direction: column; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo">
+    <div class="logo-mark"><span></span><span></span><span></span><span></span></div>
+    <div class="logo-text"><span class="lydas">Lydas</span><span class="lex">Lex</span></div>
+  </a>
+  <div class="nav-right">
+    <a href="#products" class="nav-link">PRODUCTS</a>
+    <a href="#methodology" class="nav-link">METHODOLOGY</a>
+    <a href="#founder" class="nav-link">ABOUT</a>
+    <a href="mailto:ltn.vinh@lydaslex.com" class="nav-cta">JOIN WAITLIST</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow">LEGAL OPERATIONS · EARLY ACCESS 2026</div>
+    <h1>Enterprise CLM<br/><em>SME</em> <span class="block-word">price</span></h1>
+    <p class="hero-sub">Contract lifecycle management built for small legal teams — without the Ironclad bill. Deploy in a day. Keep your data yours.</p>
+    <div class="hero-actions">
+      <a href="mailto:ltn.vinh@lydaslex.com" class="btn-primary">Join the waitlist</a>
+      <a href="#products" class="btn-ghost">See the products</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="geo-block-main">
+      <div class="geo-stat-number">$0</div>
+      <div class="geo-stat-label">CLOUD EXPOSURE · ZAB METHODOLOGY</div>
+    </div>
+    <div class="geo-block-accent">
+      <div class="accent-label">DEPLOY TIME</div>
+      <div class="accent-value">Under<br/>1 Day</div>
+    </div>
+    <div class="geo-tag">NO IT DEPENDENCY</div>
+  </div>
+</section>
+
+<div class="marquee-section">
+  <div class="marquee-track">
+    <span class="marquee-item">CONTRACT LIFECYCLE MANAGEMENT</span>
+    <span class="marquee-item">ZERO-ACCESS BUILD</span>
+    <span class="marquee-item">VENDOR TRACKING</span>
+    <span class="marquee-item">DEADLINE AUTOMATION</span>
+    <span class="marquee-item">SME LEGAL OPS</span>
+    <span class="marquee-item">AFFORDABLE CLM</span>
+    <span class="marquee-item">REGULATORY COMPLIANCE</span>
+    <span class="marquee-item">CONTRACT LIFECYCLE MANAGEMENT</span>
+    <span class="marquee-item">ZERO-ACCESS BUILD</span>
+    <span class="marquee-item">VENDOR TRACKING</span>
+    <span class="marquee-item">DEADLINE AUTOMATION</span>
+    <span class="marquee-item">SME LEGAL OPS</span>
+    <span class="marquee-item">AFFORDABLE CLM</span>
+    <span class="marquee-item">REGULATORY COMPLIANCE</span>
+  </div>
+</div>
+
+<section class="problem">
+  <div>
+    <div class="section-label">THE PROBLEM</div>
+    <h2 class="section-title">Your legal team is <em>drowning</em> in spreadsheets.</h2>
+  </div>
+  <div class="pain-list">
+    <div class="pain-item">
+      <div class="pain-num">01</div>
+      <div class="pain-content">
+        <div class="pain-title">Enterprise CLM costs more than your legal budget</div>
+        <div class="pain-body">Ironclad, Juro, and ContractPodAi are priced for Fortune 500 teams. SMEs pay the same rate — or get nothing. There is no middle ground in the market.</div>
+      </div>
+    </div>
+    <div class="pain-item">
+      <div class="pain-num">02</div>
+      <div class="pain-content">
+        <div class="pain-title">Spreadsheets break under contract volume</div>
+        <div class="pain-body">Manual tracking fails silently. Missed renewals, expired terms, and untracked obligations compound into material risk before anyone notices.</div>
+      </div>
+    </div>
+    <div class="pain-item">
+      <div class="pain-num">03</div>
+      <div class="pain-content">
+        <div class="pain-title">Your client data goes to the cloud by default</div>
+        <div class="pain-body">Most SaaS CLM platforms require uploading your contracts. Privacy compliance is an afterthought. Data sovereignty is treated as a premium feature.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="products" id="products">
+  <div class="products-header">
+    <div>
+      <div class="section-label">THE PRODUCTS</div>
+      <h2 class="section-title">Deployable tools.<br/>No bloat. No lock-in.</h2>
+    </div>
+    <p>LydasLex builds affordable contract management tools for SMEs, small law firms, and solo practitioners in English-speaking markets — priced for teams of 1 to 10, not 1,000.</p>
+  </div>
+  <div class="product-grid">
+    <div class="product-card">
+      <div class="product-header">
+        <span class="product-tag">MODEL 1A · EXCEL/VBA</span>
+        <div class="product-name">Vendor Contract Tracker</div>
+      </div>
+      <div class="product-body">
+        <p class="product-desc">Automated inbound contract lifecycle tracker — deadline alerts, status logic, and dynamic filtering. The affordable alternative to enterprise CLM for your vendor side.</p>
+        <ul class="feature-list">
+          <li>Deadline alerts & renewal triggers</li>
+          <li>Dynamic status filtering & dashboards</li>
+          <li>Windows & Mac compatible VBA</li>
+          <li>Zero IT dependency — deploy in hours</li>
+          <li>ZAB: no client data leaves your machine</li>
+        </ul>
+      </div>
+    </div>
+    <div class="product-card">
+      <div class="product-header">
+        <span class="product-tag">MODEL 1B · EXCEL/VBA</span>
+        <div class="product-name">Customer Contract Tracker</div>
+      </div>
+      <div class="product-body">
+        <p class="product-desc">Outbound contract management — counterparty tracking, obligation flags, and renewal automation. Full-cycle CLM coverage when paired with Model 1A.</p>
+        <ul class="feature-list">
+          <li>Counterparty tracking & history</li>
+          <li>Obligation flag automation</li>
+          <li>Unified schema with Model 1A</li>
+          <li>Built for future dashboard integration</li>
+          <li>Priced for SME legal teams globally</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="zab" id="methodology">
+  <div class="zab-inner">
+    <div>
+      <div class="section-label">METHODOLOGY</div>
+      <h2 class="section-title">Privacy is not a feature.<br/><em>It's the foundation.</em></h2>
+      <p class="zab-body">Every LydasLex tool is built on Zero-Access Build (ZAB) methodology — synthetic and pseudonymized data architecture throughout the entire build pipeline. Your client contracts never touch our systems. Ever.</p>
+    </div>
+    <div class="zab-code">
+<span class="c">// Zero-Access Build (ZAB) Protocol</span>
+<span class="c">// Client data never leaves your machine</span>
+
+<span class="k">const</span> <span class="p">pipeline</span> = {
+  data:         <span class="s">"pseudonymized"</span>,
+  cloudUpload:  <span class="k">false</span>,
+  clientAccess: <span class="k">none</span>,
+  buildEnv:     <span class="s">"local-only"</span>,
+  deploy:       <span class="f">local()</span>
+}
+
+<span class="c">// Your contracts.</span>
+<span class="c">// Your machine. Always.</span>
+    </div>
+  </div>
+</section>
+
+<section class="founder" id="founder">
+  <div class="founder-visual">
+    <div class="founder-card-main">
+      <div class="founder-initial">V</div>
+      <div class="name">Vĩnh Lê</div>
+      <div class="title">LL.M · UNIVERSITY OF MELBOURNE</div>
+    </div>
+    <div class="founder-card-sub">
+      AI Law · IT Contract Law · IP<br/>
+      FIDIC / EPC · PPA · Legal Ops<br/>
+      Vietnam · Southeast Asia · Global
+    </div>
+  </div>
+  <div class="founder-content">
+    <div class="section-label">THE BUILDER</div>
+    <h2 class="section-title">Built by a lawyer<br/><em>who codes.</em></h2>
+    <p class="founder-bio">5+ years managing PPA, EPC, and FIDIC contracts across Vietnam and Southeast Asia. LL.M from the University of Melbourne specializing in AI Law and IT Contract Law. LydasLex exists because enterprise legal tools were never built for the rest of us.</p>
+    <div class="tag-grid">
+      <span class="tag">AI Law</span>
+      <span class="tag">IT Contract Law</span>
+      <span class="tag">Intellectual Property</span>
+      <span class="tag">FIDIC / EPC</span>
+      <span class="tag">Legal Ops</span>
+      <span class="tag">CLM Architecture</span>
+      <span class="tag">ZAB Methodology</span>
+    </div>
+  </div>
+</section>
+
+<section class="footer-cta">
+  <div>
+    <div class="section-label">EARLY ACCESS</div>
+    <h2 class="section-title">Get there <em>first.</em></h2>
+  </div>
+  <div class="cta-right">
+    <p>We're building in public. Join the waitlist and be first when Model 1A ships — early access pricing guaranteed for waitlist members.</p>
+    <div class="email-cta">
+      <a href="mailto:ltn.vinh@lydaslex.com" class="btn-primary" style="display:inline-block;width:fit-content;">Join the waitlist</a>
+      <a href="mailto:ltn.vinh@lydaslex.com" class="email-display">ltn.vinh@lydaslex.com</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="logo-text"><span class="lydas">Lydas</span><span class="lex">Lex</span></div>
+  <p>© 2026 LYDASLEX · LEGAL OPERATIONS · HO CHI MINH CITY</p>
+</footer>
+
+</body>
+</html>
