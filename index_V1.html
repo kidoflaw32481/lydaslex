@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>LydasLex — Legal Operations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600;1,700&family=DM+Mono:wght@400;500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --indigo: #4338CA;
+  --indigo-deep: #3730A3;
+  --violet: #818CF8;
+  --violet-light: #C7D2FE;
+  --violet-pale: #EEF2FF;
+  --ink: #111118;
+  --muted: #71717A;
+  --muted-2: #A1A1AA;
+  --paper: #FDFCFB;
+  --paper-2: #F7F6F3;
+  --paper-3: #EEECEA;
+  --border: #E4E2DD;
+  --white: #FFFFFF;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 4rem;
+  height: 64px;
+  background: rgba(253,252,251,0.94);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+
+.logo-mark {
+  width: 28px; height: 28px; border-radius: 5px;
+  background: var(--indigo);
+  display: grid; grid-template-columns: 1fr 1fr; gap: 2px; padding: 4.5px;
+}
+.logo-mark span { border-radius: 1px; display: block; }
+.logo-mark span:nth-child(1) { background: var(--violet-light); }
+.logo-mark span:nth-child(2) { background: var(--violet); }
+.logo-mark span:nth-child(3) { background: var(--violet); }
+.logo-mark span:nth-child(4) { background: var(--violet-light); }
+
+.logo-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.35rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+.logo-text .lydas { color: var(--violet); }
+.logo-text .lex { color: var(--indigo); }
+
+.nav-links { display: flex; align-items: center; gap: 2.5rem; }
+
+.nav-link {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.nav-link:hover { color: var(--ink); }
+
+.nav-cta {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  color: var(--white);
+  background: var(--indigo);
+  padding: 0.6rem 1.4rem;
+  border-radius: 2px;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+.nav-cta:hover { background: var(--indigo-deep); }
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 55% 45%;
+  padding-top: 64px;
+}
+
+.hero-left {
+  padding: 7rem 5rem 6rem 4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-right: 1px solid var(--border);
+}
+
+.hero-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  color: var(--indigo);
+  margin-bottom: 3rem;
+}
+.hero-tag::before {
+  content: '';
+  width: 24px; height: 1px;
+  background: var(--indigo);
+}
+
+.hero h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(3.8rem, 6vw, 6rem);
+  font-weight: 700;
+  line-height: 1.0;
+  letter-spacing: -0.02em;
+  margin-bottom: 2rem;
+  color: var(--ink);
+}
+
+.hero h1 .line-2 {
+  display: block;
+  color: var(--indigo);
+  font-style: italic;
+}
+
+.hero h1 .line-3 {
+  display: block;
+  font-style: normal;
+  color: var(--ink);
+}
+
+.hero-divider {
+  width: 40px;
+  height: 1px;
+  background: var(--border);
+  margin-bottom: 2rem;
+}
+
+.hero-sub {
+  font-size: 0.95rem;
+  color: var(--muted);
+  line-height: 1.85;
+  max-width: 420px;
+  margin-bottom: 3rem;
+  font-weight: 300;
+}
+
+.hero-actions { display: flex; gap: 1.25rem; align-items: center; }
+
+.btn-primary {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  background: var(--indigo);
+  color: var(--white);
+  padding: 0.85rem 2rem;
+  border-radius: 2px;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+.btn-primary:hover { background: var(--indigo-deep); }
+
+.btn-text {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.2s;
+  display: flex; align-items: center; gap: 0.5rem;
+}
+.btn-text:hover { color: var(--ink); }
+.btn-text::after { content: '↓'; }
+
+/* HERO RIGHT */
+.hero-right {
+  background: var(--indigo);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 4rem 3.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-right::before {
+  content: '';
+  position: absolute;
+  top: -120px; right: -120px;
+  width: 400px; height: 400px;
+  border-radius: 50%;
+  background: rgba(129,140,248,0.1);
+  pointer-events: none;
+}
+
+.hero-right::after {
+  content: '';
+  position: absolute;
+  bottom: -80px; left: -80px;
+  width: 300px; height: 300px;
+  border-radius: 50%;
+  background: rgba(199,210,254,0.06);
+  pointer-events: none;
+}
+
+.hero-right-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.18em;
+  color: rgba(199,210,254,0.5);
+  position: relative; z-index: 2;
+}
+
+.hero-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  position: relative; z-index: 2;
+}
+
+.hero-stat {}
+
+.stat-value {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 4.5rem;
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+
+.stat-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.14em;
+  color: var(--violet-light);
+  line-height: 1.6;
+}
+
+.hero-right-bottom {
+  position: relative; z-index: 2;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  padding-top: 2rem;
+}
+
+.hero-right-bottom p {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.15rem;
+  font-style: italic;
+  color: rgba(255,255,255,0.5);
+  line-height: 1.6;
+  max-width: 260px;
+}
+
+/* ── MARQUEE ── */
+.marquee-wrap {
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  background: var(--paper-2);
+  padding: 0.9rem 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.marquee-track {
+  display: inline-flex;
+  animation: marquee 30s linear infinite;
+}
+
+.marquee-item {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  color: var(--muted-2);
+  padding: 0 2rem;
+  display: inline-flex; align-items: center; gap: 2rem;
+}
+.marquee-item::after { content: '·'; color: var(--violet); }
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* ── SHARED ── */
+.section-eyebrow {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.18em;
+  color: var(--muted-2);
+  display: flex; align-items: center; gap: 0.75rem;
+  margin-bottom: 2rem;
+}
+.section-eyebrow::before { content: ''; width: 18px; height: 1px; background: var(--muted-2); display: block; }
+
+.section-heading {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2rem, 3.5vw, 3rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+.section-heading em { font-style: italic; color: var(--indigo); }
+
+/* ── PROBLEM ── */
+.problem {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.problem-left {
+  padding: 7rem 4rem 7rem 4rem;
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: var(--paper);
+}
+
+.problem-left .section-heading { margin-bottom: 1.5rem; }
+
+.problem-left p {
+  font-size: 0.9rem;
+  color: var(--muted);
+  line-height: 1.85;
+  max-width: 340px;
+  font-weight: 300;
+}
+
+.problem-right {
+  background: var(--paper-2);
+  padding: 7rem 4rem;
+}
+
+.pain-list { display: flex; flex-direction: column; }
+
+.pain-item {
+  padding: 2.25rem 0;
+  border-bottom: 1px solid var(--border);
+  display: grid;
+  grid-template-columns: 2.5rem 1fr;
+  gap: 1.25rem;
+}
+.pain-item:first-child { border-top: 1px solid var(--border); padding-top: 2.25rem; }
+
+.pain-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  color: var(--violet);
+  padding-top: 0.15rem;
+}
+
+.pain-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+  color: var(--ink);
+  line-height: 1.3;
+}
+
+.pain-body {
+  font-size: 0.82rem;
+  color: var(--muted);
+  line-height: 1.75;
+  font-weight: 300;
+}
+
+/* ── PRODUCTS ── */
+.products {
+  border-top: 1px solid var(--border);
+  padding: 7rem 4rem;
+}
+
+.products-top {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: end;
+  margin-bottom: 4rem;
+  padding-bottom: 4rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.products-top p {
+  font-size: 0.875rem;
+  color: var(--muted);
+  line-height: 1.85;
+  font-weight: 300;
+  align-self: end;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.product-card {
+  background: var(--paper);
+  padding: 3rem;
+  transition: background 0.2s;
+}
+.product-card:hover { background: var(--paper-2); }
+
+.product-model {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.16em;
+  color: var(--violet);
+  margin-bottom: 1.25rem;
+  display: flex; align-items: center; gap: 0.6rem;
+}
+.product-model::before { content: ''; width: 14px; height: 1px; background: var(--violet); display: block; }
+
+.product-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.15;
+  margin-bottom: 1rem;
+}
+
+.product-desc {
+  font-size: 0.82rem;
+  color: var(--muted);
+  line-height: 1.8;
+  margin-bottom: 2rem;
+  font-weight: 300;
+}
+
+.feature-list { list-style: none; display: flex; flex-direction: column; gap: 0.65rem; }
+
+.feature-list li {
+  font-size: 0.78rem;
+  color: var(--ink);
+  display: flex; align-items: flex-start; gap: 0.75rem;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+.feature-list li::before {
+  content: '';
+  width: 3px; height: 3px;
+  border-radius: 50%;
+  background: var(--indigo);
+  flex-shrink: 0;
+  margin-top: 0.55rem;
+}
+
+/* ── ZAB ── */
+.zab {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-top: 1px solid var(--border);
+}
+
+.zab-left {
+  background: var(--indigo);
+  padding: 7rem 4rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.zab-left::before {
+  content: '';
+  position: absolute;
+  bottom: -100px; right: -100px;
+  width: 350px; height: 350px;
+  border-radius: 50%;
+  background: rgba(129,140,248,0.1);
+}
+
+.zab-left .section-eyebrow { color: rgba(199,210,254,0.5); }
+.zab-left .section-eyebrow::before { background: rgba(199,210,254,0.5); }
+.zab-left .section-heading { color: var(--white); margin-bottom: 1.5rem; position: relative; z-index: 2; }
+.zab-left .section-heading em { color: var(--violet-light); }
+
+.zab-body {
+  font-size: 0.875rem;
+  color: rgba(255,255,255,0.5);
+  line-height: 1.85;
+  max-width: 360px;
+  font-weight: 300;
+  position: relative; z-index: 2;
+}
+
+.zab-right {
+  background: var(--ink);
+  padding: 7rem 4rem;
+  display: flex;
+  align-items: center;
+}
+
+.zab-code {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.75rem;
+  line-height: 2.1;
+  width: 100%;
+}
+.zab-code .c { color: rgba(129,140,248,0.3); }
+.zab-code .k { color: #818CF8; }
+.zab-code .s { color: #A5B4FC; }
+.zab-code .f { color: #6EE7B7; }
+.zab-code .p { color: rgba(255,255,255,0.55); }
+.zab-code .br { display: block; height: 0.5rem; }
+
+/* ── FOUNDER ── */
+.founder {
+  border-top: 1px solid var(--border);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.founder-left {
+  padding: 7rem 4rem;
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.founder-left .section-heading { margin-bottom: 1.5rem; }
+
+.founder-bio {
+  font-size: 0.875rem;
+  color: var(--muted);
+  line-height: 1.85;
+  margin-bottom: 2.5rem;
+  font-weight: 300;
+  max-width: 380px;
+}
+
+.credential-list { display: flex; flex-direction: column; gap: 0.75rem; }
+
+.credential-item {
+  display: flex; align-items: flex-start; gap: 1rem;
+  font-size: 0.8rem;
+  color: var(--ink);
+  line-height: 1.5;
+}
+.credential-item::before {
+  content: '';
+  width: 3px; height: 3px;
+  border-radius: 50%;
+  background: var(--indigo);
+  flex-shrink: 0;
+  margin-top: 0.55rem;
+}
+
+.tag-row {
+  display: flex; flex-wrap: wrap; gap: 0.4rem;
+  margin-top: 2.5rem;
+}
+
+.tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  border: 1px solid var(--border);
+  padding: 0.3rem 0.7rem;
+  border-radius: 1px;
+  background: var(--white);
+}
+
+.founder-right {
+  background: var(--paper-2);
+  padding: 7rem 4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.founder-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.founder-card-top {
+  background: var(--indigo);
+  padding: 2.5rem;
+  position: relative;
+  overflow: hidden;
+}
+.founder-card-top::after {
+  content: '';
+  position: absolute;
+  top: -60px; right: -60px;
+  width: 180px; height: 180px;
+  border-radius: 50%;
+  background: rgba(129,140,248,0.12);
+}
+
+.founder-avatar {
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 1.5rem;
+  position: relative; z-index: 2;
+}
+
+.founder-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 0.25rem;
+  position: relative; z-index: 2;
+}
+
+.founder-title {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.12em;
+  color: var(--violet-light);
+  position: relative; z-index: 2;
+}
+
+.founder-card-body {
+  padding: 2rem 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.founder-card-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border);
+}
+.founder-card-row:last-child { border-bottom: none; }
+
+.card-row-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
+  color: var(--muted-2);
+}
+
+.card-row-value {
+  font-size: 0.8rem;
+  color: var(--ink);
+  font-weight: 500;
+  text-align: right;
+  max-width: 55%;
+  line-height: 1.4;
+}
+
+/* ── CTA ── */
+.cta-section {
+  border-top: 1px solid var(--border);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.cta-left {
+  padding: 7rem 4rem;
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.cta-left .section-heading { margin-bottom: 1rem; }
+
+.cta-left p {
+  font-size: 0.875rem;
+  color: var(--muted);
+  line-height: 1.85;
+  font-weight: 300;
+  max-width: 340px;
+  margin-bottom: 2.5rem;
+}
+
+.cta-email {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  color: var(--indigo);
+  text-decoration: none;
+  border-bottom: 1px solid var(--violet-light);
+  padding-bottom: 2px;
+  display: inline-block;
+  transition: color 0.2s;
+  margin-top: 1rem;
+}
+.cta-email:hover { color: var(--indigo-deep); }
+
+.cta-right {
+  background: var(--paper-2);
+  padding: 7rem 4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.cta-point {
+  display: flex;
+  gap: 1.25rem;
+  align-items: flex-start;
+  padding: 1.5rem 0;
+  border-bottom: 1px solid var(--border);
+}
+.cta-point:first-child { border-top: 1px solid var(--border); }
+
+.cta-point-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  color: var(--violet);
+  padding-top: 0.1rem;
+  flex-shrink: 0;
+}
+
+.cta-point-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 0.25rem;
+}
+
+.cta-point-body {
+  font-size: 0.8rem;
+  color: var(--muted);
+  line-height: 1.7;
+  font-weight: 300;
+}
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 1.75rem 4rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  background: var(--paper);
+}
+
+footer p {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
+  color: var(--muted-2);
+}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.hero-left { animation: fadeUp 0.8s ease both; }
+.hero-right { animation: fadeUp 0.8s ease 0.1s both; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  nav { padding: 0 1.5rem; }
+  .nav-links .nav-link { display: none; }
+
+  .hero { grid-template-columns: 1fr; min-height: auto; }
+  .hero-left { padding: 5rem 1.5rem 3rem; border-right: none; border-bottom: 1px solid var(--border); }
+  .hero-right { padding: 3rem 1.5rem; min-height: 300px; }
+  .stat-value { font-size: 3rem; }
+
+  .problem { grid-template-columns: 1fr; }
+  .problem-left { padding: 4rem 1.5rem; border-right: none; border-bottom: 1px solid var(--border); }
+  .problem-right { padding: 3rem 1.5rem; }
+
+  .products { padding: 4rem 1.5rem; }
+  .products-top { grid-template-columns: 1fr; gap: 1.5rem; margin-bottom: 2rem; padding-bottom: 2rem; }
+  .product-grid { grid-template-columns: 1fr; }
+  .product-card { padding: 2rem 1.5rem; }
+
+  .zab { grid-template-columns: 1fr; }
+  .zab-left { padding: 4rem 1.5rem; }
+  .zab-right { padding: 3rem 1.5rem; }
+
+  .founder { grid-template-columns: 1fr; }
+  .founder-left { padding: 4rem 1.5rem; border-right: none; border-bottom: 1px solid var(--border); }
+  .founder-right { padding: 3rem 1.5rem; }
+
+  .cta-section { grid-template-columns: 1fr; }
+  .cta-left { padding: 4rem 1.5rem; border-right: none; border-bottom: 1px solid var(--border); }
+  .cta-right { padding: 3rem 1.5rem; }
+
+  footer { padding: 1.5rem; flex-direction: column; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <div class="logo-mark"><span></span><span></span><span></span><span></span></div>
+    <div class="logo-text"><span class="lydas">Lydas</span><span class="lex">Lex</span></div>
+  </a>
+  <div class="nav-links">
+    <a href="#products" class="nav-link">PRODUCTS</a>
+    <a href="#methodology" class="nav-link">METHODOLOGY</a>
+    <a href="#about" class="nav-link">ABOUT</a>
+    <a href="mailto:ltn.vinh@lydaslex.com" class="nav-cta">JOIN WAITLIST</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-tag">LEGAL OPERATIONS · EARLY ACCESS 2026</div>
+    <h1>
+      Enterprise CLM
+      <span class="line-2">at the price</span>
+      <span class="line-3">you deserve.</span>
+    </h1>
+    <div class="hero-divider"></div>
+    <p class="hero-sub">Contract lifecycle management built for small legal teams — without the Ironclad bill. Designed for fast deployment. Keep your data yours. No IT required.</p>
+    <div class="hero-actions">
+      <a href="mailto:ltn.vinh@lydaslex.com" class="btn-primary">JOIN THE WAITLIST</a>
+      <a href="#products" class="btn-text">SEE PRODUCTS</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-right-label">LYDASLEX · LEGAL OPS PLATFORM</div>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="stat-value">Zero</div>
+        <div class="stat-label">CLOUD EXPOSURE<br/>ZERO-ACCESS BUILD METHODOLOGY</div>
+      </div>
+      <div class="hero-stat">
+        <div class="stat-value">Fast</div>
+        <div class="stat-label">DEPLOYMENT<br/>DESIGNED FOR FAST DEPLOYMENT</div>
+      </div>
+      <div class="hero-stat">
+        <div class="stat-value">SME</div>
+        <div class="stat-label">PRICING TIER<br/>BUILT FOR TEAMS OF 1 TO 10</div>
+      </div>
+    </div>
+    <div class="hero-right-bottom">
+      <p>"Enterprise legal tools were never built for the rest of us."</p>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span class="marquee-item">CONTRACT LIFECYCLE MANAGEMENT</span>
+    <span class="marquee-item">ZERO-ACCESS BUILD</span>
+    <span class="marquee-item">VENDOR TRACKING</span>
+    <span class="marquee-item">DEADLINE AUTOMATION</span>
+    <span class="marquee-item">SME LEGAL OPS</span>
+    <span class="marquee-item">AFFORDABLE CLM</span>
+    <span class="marquee-item">DATA PRIVACY</span>
+    <span class="marquee-item">REGULATORY COMPLIANCE</span>
+    <span class="marquee-item">CONTRACT LIFECYCLE MANAGEMENT</span>
+    <span class="marquee-item">ZERO-ACCESS BUILD</span>
+    <span class="marquee-item">VENDOR TRACKING</span>
+    <span class="marquee-item">DEADLINE AUTOMATION</span>
+    <span class="marquee-item">SME LEGAL OPS</span>
+    <span class="marquee-item">AFFORDABLE CLM</span>
+    <span class="marquee-item">DATA PRIVACY</span>
+    <span class="marquee-item">REGULATORY COMPLIANCE</span>
+  </div>
+</div>
+
+<!-- PROBLEM -->
+<section class="problem">
+  <div class="problem-left">
+    <div class="section-eyebrow">THE PROBLEM</div>
+    <h2 class="section-heading">Your legal team is <em>drowning</em> in spreadsheets.</h2>
+    <p>Enterprise CLM platforms were built for Fortune 500 teams — and priced accordingly. Small legal teams are left with nothing between Ironclad and a broken Excel sheet.</p>
+  </div>
+  <div class="problem-right">
+    <div class="pain-list">
+      <div class="pain-item">
+        <div class="pain-num">01</div>
+        <div>
+          <div class="pain-title">Enterprise CLM costs more than your legal budget</div>
+          <div class="pain-body">Ironclad, Juro, and ContractPodAi are priced for teams of hundreds. SMEs pay the same rate or get nothing. There is no middle ground.</div>
+        </div>
+      </div>
+      <div class="pain-item">
+        <div class="pain-num">02</div>
+        <div>
+          <div class="pain-title">Spreadsheets break under contract volume</div>
+          <div class="pain-body">Manual tracking fails silently. Missed renewals, expired terms, and untracked obligations compound into material risk before anyone notices.</div>
+        </div>
+      </div>
+      <div class="pain-item">
+        <div class="pain-num">03</div>
+        <div>
+          <div class="pain-title">Your client data goes to the cloud by default</div>
+          <div class="pain-body">Most SaaS CLM platforms require uploading your contracts. Data sovereignty is treated as a premium feature. Privacy is an afterthought.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTS -->
+<section class="products" id="products">
+  <div class="products-top">
+    <div>
+      <div class="section-eyebrow">THE PRODUCTS</div>
+      <h2 class="section-heading">Deployable tools.<br/><em>No bloat.</em> No lock-in.</h2>
+    </div>
+    <p>LydasLex builds affordable contract management tools for SMEs, small law firms, and solo practitioners in English-speaking markets. Priced for teams of 1 to 10, not 1,000.</p>
+  </div>
+  <div class="product-grid">
+    <div class="product-card">
+      <div class="product-model">MODEL 1A · EXCEL/VBA</div>
+      <div class="product-name">Vendor Contract Tracker</div>
+      <p class="product-desc">Automated inbound contract lifecycle tracker — deadline alerts, status logic, and dynamic filtering. The affordable alternative to enterprise CLM for your vendor side.</p>
+      <ul class="feature-list">
+        <li>Automated deadline alerts & renewal triggers</li>
+        <li>Dynamic status filtering & contract dashboards</li>
+        <li>Windows & Mac compatible — no IT required</li>
+        <li>ZAB: client data never leaves your machine</li>
+        <li>Designed for fast, minimal-friction deployment</li>
+      </ul>
+    </div>
+    <div class="product-card">
+      <div class="product-model">MODEL 1B · EXCEL/VBA</div>
+      <div class="product-name">Customer Contract Tracker</div>
+      <p class="product-desc">Outbound contract management — counterparty tracking, obligation flags, and renewal automation. Full-cycle CLM coverage when paired with Model 1A.</p>
+      <ul class="feature-list">
+        <li>Counterparty tracking & engagement history</li>
+        <li>Obligation flag automation & alerts</li>
+        <li>Unified schema with Model 1A</li>
+        <li>Built for future dashboard integration</li>
+        <li>Priced for SME legal teams globally</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ZAB -->
+<section class="zab" id="methodology">
+  <div class="zab-left">
+    <div class="section-eyebrow">METHODOLOGY</div>
+    <h2 class="section-heading">Privacy is not<br/>a feature.<br/><em>It's the foundation.</em></h2>
+    <p class="zab-body">Every LydasLex tool is built on Zero-Access Build (ZAB) methodology — synthetic and pseudonymized data architecture throughout the entire pipeline. Your client contracts never touch our systems. Ever.</p>
+  </div>
+  <div class="zab-right">
+    <div class="zab-code">
+<span class="c">// Zero-Access Build (ZAB) Protocol</span>
+<span class="c">// Client data never leaves your machine</span>
+<span class="br"></span>
+<span class="k">const</span> <span class="p">pipeline</span> <span class="p">=</span> <span class="p">{</span>
+<span class="p">  data:</span>         <span class="s">"pseudonymized"</span><span class="p">,</span>
+<span class="p">  cloudUpload:</span>  <span class="k">false</span><span class="p">,</span>
+<span class="p">  clientAccess:</span> <span class="k">none</span><span class="p">,</span>
+<span class="p">  buildEnv:</span>     <span class="s">"local-only"</span><span class="p">,</span>
+<span class="p">  deploy:</span>       <span class="f">local()</span>
+<span class="p">}</span>
+<span class="br"></span>
+<span class="c">// Your contracts.</span>
+<span class="c">// Your machine.</span>
+<span class="c">// Always.</span>
+    </div>
+  </div>
+</section>
+
+<!-- FOUNDER -->
+<section class="founder" id="about">
+  <div class="founder-left">
+    <div class="section-eyebrow">THE BUILDER</div>
+    <h2 class="section-heading">Built by a lawyer<br/><em>who codes.</em></h2>
+    <p class="founder-bio">LydasLex exists because enterprise legal tools were never built for the rest of us. 5+ years managing PPA, EPC, and FIDIC contracts across Vietnam and Southeast Asia — combined with an LL.M from the University of Melbourne in AI Law and IT Contract Law.</p>
+    <div class="credential-list">
+      <div class="credential-item">LL.M — AI Law & Intellectual Property, University of Melbourne</div>
+      <div class="credential-item">Vietnam AI Law Practitioner — Law 134/2025/QH15</div>
+      <div class="credential-item">5+ years — PPA, EPC, FIDIC contract management</div>
+      <div class="credential-item">Legal Operations — CLM Architecture, ZAB Methodology</div>
+    </div>
+    <div class="tag-row">
+      <span class="tag">AI Law</span>
+      <span class="tag">IT Contract Law</span>
+      <span class="tag">Intellectual Property</span>
+      <span class="tag">FIDIC / EPC</span>
+      <span class="tag">Legal Ops</span>
+      <span class="tag">CLM Architecture</span>
+    </div>
+  </div>
+  <div class="founder-right">
+    <div class="founder-card">
+      <div class="founder-card-top">
+        <div class="founder-avatar">V</div>
+        <div class="founder-name">Vĩnh Lê</div>
+        <div class="founder-title">FOUNDER · LYDASLEX LEGAL OPERATIONS</div>
+      </div>
+      <div class="founder-card-body">
+        <div class="founder-card-row">
+          <div class="card-row-label">EDUCATION</div>
+          <div class="card-row-value">LL.M, University of Melbourne</div>
+        </div>
+        <div class="founder-card-row">
+          <div class="card-row-label">SPECIALIZATION</div>
+          <div class="card-row-value">AI Law · IT Contract Law · IP</div>
+        </div>
+        <div class="founder-card-row">
+          <div class="card-row-label">EXPERIENCE</div>
+          <div class="card-row-value">5+ years, Vietnam & SEA</div>
+        </div>
+        <div class="founder-card-row">
+          <div class="card-row-label">DOMAINS</div>
+          <div class="card-row-value">Solar / EPC / Construction / Legal Tech</div>
+        </div>
+        <div class="founder-card-row">
+          <div class="card-row-label">CONTACT</div>
+          <div class="card-row-value">ltn.vinh@lydaslex.com</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="cta-left">
+    <div class="section-eyebrow">EARLY ACCESS</div>
+    <h2 class="section-heading">Get there <em>first.</em></h2>
+    <p>We're building in public. Join the waitlist and be first when Model 1A ships — early access pricing guaranteed for waitlist members.</p>
+    <a href="mailto:ltn.vinh@lydaslex.com" class="btn-primary" style="width:fit-content;">JOIN THE WAITLIST</a>
+    <a href="mailto:ltn.vinh@lydaslex.com" class="cta-email">ltn.vinh@lydaslex.com</a>
+  </div>
+  <div class="cta-right">
+    <div class="cta-point">
+      <div class="cta-point-num">01</div>
+      <div>
+        <div class="cta-point-title">Early access pricing</div>
+        <div class="cta-point-body">Waitlist members receive guaranteed early access pricing — locked in before public launch.</div>
+      </div>
+    </div>
+    <div class="cta-point">
+      <div class="cta-point-num">02</div>
+      <div>
+        <div class="cta-point-title">Direct founder access</div>
+        <div class="cta-point-body">Work directly with the builder. Shape the product roadmap based on your actual legal ops needs.</div>
+      </div>
+    </div>
+    <div class="cta-point">
+      <div class="cta-point-num">03</div>
+      <div>
+        <div class="cta-point-title">Designed for fast deployment</div>
+        <div class="cta-point-body">No IT, no onboarding calls, no enterprise contracts. Download, configure, and get running with minimal setup.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="logo-text"><span class="lydas">Lydas</span><span class="lex">Lex</span></div>
+  <p>© 2026 LYDASLEX · LEGAL OPERATIONS · HO CHI MINH CITY</p>
+</footer>
+
+</body>
+</html>
